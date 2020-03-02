@@ -1,0 +1,2 @@
+class TeacherLabId < ApplicationRecord
+end

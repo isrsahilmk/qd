@@ -1,0 +1,37 @@
+<br> <br>
+<div class="container">
+    <h3
+      style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+     Search Result</h3>
+      <!-- OUTER CARD WITH GREEN BORDER STARTED -->
+    <div class="card mb-3 rounded shadow-sm bg-light " style="border-width: 2px; border-color:#5c96b8 ;">
+
+      <div class="card-title text-dark ">
+        <div class="card-body ">
+          <!-- INNER  CARD WITH GREEN BG STARTED-->
+          <% if @results.any? %>
+	          <% @results.each do |question| %>
+		          <div class="card mb-3 rounded shadow-sm alert-info " style=" border-left: 5px solid #5c96b8 ;">
+		            <div class="card-title text-dark ">
+		              <div class="card-body" >
+		              	<strong>
+		              	<i>
+		              	<%= link_to("#{question.title.to_s} (Posted by: #{question.name.to_s}, Year: #{question.student_year.to_s})", question_path(question), :class => "text-dark") %>
+		              	</i>
+		              	</strong>
+		              </div>
+		            </div>
+		          </div> 
+	          <% end %>
+          <% else %>
+          	<p class="text-dark">Sorry no search result for your query</p>
+          <% end %>
+          <!-- INNER  CARD WITH GREEN BG ENDED-->
+
+
+        </div>
+
+
+      </div>
+    </div><!-- OUTER CARD WITH GREEN BORDER  ENDED-->
+  </div><!-- ANSWERS CONTAINER ENDED -->

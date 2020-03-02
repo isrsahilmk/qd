@@ -1,0 +1,128 @@
+  <br><br>
+  <!-- QUESTION CONTAINER STARTED -->
+  <div class="container">
+    
+    <h3 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+      Question</h3>
+    <div class="card mb-3 rounded shadow-sm alert-danger" style="   border-bottom: 5px solid #d9534f ;">
+      <div class="card-title">
+        <div class="card-body">
+          <p class="media-body" style="font-size: 25px;">
+            <!-- put question title here -->
+            <strong class="d-block text-dark"><i class="text-white bg-dark">Question Title:</i>  <strong class="text-dark" style="font-size: 19px;"><%= @question.title %> <strong style="font-size: 14px;" class="text-dark"><i> ~ (Posted by: <%= @question.name %>, <%= @question.branch.upcase %>, Year: <%= @question.student_year %>) - <%= time_ago_in_words(@question.created_at) %> ago</i></strong></strong></strong>
+          </p>
+          <div class="media text-muted pt-0">
+            <p class="media-body pb-0">
+              <!-- put question body  -->
+              <strong class="d-block text-dark" style="font-size: 25px;"><i class="text-white bg-dark">Question Body:</i>  <strong class="text-dark" style="font-size: 19px;"><%= @question.body %></strong></strong>
+
+              
+            </p>
+          </div>
+        </div>
+        <div class="card-footer alert-danger  border-0"> <!-- CARD FOOTER WITH VIEW COUNT AND ADD ANS BTN -->
+          <div class="row align-items-end">
+            <div class="col">
+              <div class="text-left ">
+                <small>Views: <span><%= @question.view_count %></span></small>
+              </div>
+            </div>
+            
+            <div class="col ">
+              <div class="text-right ">
+                <button type="button" class="btn btn-primary p-1 " data-toggle="modal" data-target="#examplemodalCenter">
+                  Add Answer
+                </button>
+              </div>
+
+                <!-- add ans  modal started-->
+                <%= form_for(@answer = Answer.new, as: :new_answer, :class => "text-dark", url: question_answers_path(@question, @answer)) do |f| %>
+                <div class="modal fade" id="examplemodalCenter" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-dark" id="exampleModalLongTitle">Answer</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="form-group">
+
+                            <%= f.label :short_answer, "Short Answer", html: { :for => "exampleInputEmail1" } %>
+                            <%= f.text_field :short_answer, :class => "form-control", html: { :id => "exampleInputEmail1"} %>
+
+                          </div>
+
+                          <div class="form-group">
+                            <%= f.label :descriptive_answer, "Descriptive Answer", html: { :for => "exampleFormControlTextarea1" } %>
+                            <%= f.text_area :descriptive_answer, :class => "form-control", html: { :id => "exampleFormControlTextarea1", :rows => "3" } %>
+                          </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <%= f.submit "Add Answer", :class => "btn btn-primary" %>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
+                 <% end %>
+
+
+              </div>
+            </div>
+          </div><!-- CARD FOOTER WITH VIEW COUNT AND ADD ANS BTN -->
+
+
+        </div>
+      </div>
+    </div>
+  </div><!-- QUESTION CONTAINER ENDED --><br>
+
+    <hr style="width: 80%;">
+
+  <!-- ANSWERS CONTAINER STARTED -->
+  <div class="container">
+    <h3
+      style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+      Answers</h3>
+      <!-- OUTER CARD WITH GREEN BORDER STARTED -->
+    <div class="card mb-3 rounded shadow-sm bg-light " style="border-width: 2px; border-color:#5cb85c ;">
+
+      <div class="card-title text-dark ">
+        <div class="card-body ">
+        <% if @question.answers.any? %>
+          <% @question.answers.each do |answer| %>
+              <!-- INNER  CARD WITH GREEN BG STARTED-->
+              <div class="card mb-3 rounded shadow-sm alert-success " style=" border-left: 5px solid #5cb85c ;">
+                <div class="card-title text-dark ">
+                  <div class="card-body  " >
+                    <p class="media-body">
+                      <!-- put Short Ans here -->
+                      <strong class="d-block text-dark" style="font-size: 25px;"><i class="text-white bg-dark">Short Answer:</i>  <strong class="text-dark" style="font-size: 19px;"><%= answer.short_answer %> <strong style="font-size: 14px;" class="text-dark"><i> ~ (Posted by: <%= answer.name %>) - <%= time_ago_in_words(answer.created_at) %> ago</i></strong></strong></strong>
+                    </p>
+                    <div class="media text-muted pt-0">
+                      <p class="media-body pb-0   ">
+                        <!-- put Descriptive Ans here -->
+                        <strong class="d-block text-dark" style="font-size: 25px;"><i class="text-white bg-dark">Descriptive Answer:</i>  <strong class="text-dark" style="font-size: 19px;"><%= answer.descriptive_answer %></strong></strong>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div> <!-- INNER  CARD WITH GREEN BG ENDED-->
+            <% end %>
+          <% else %>
+            <p><strong class="text-dark">Sorry, no one has posted any answer for this question yet.</strong></p>
+          <% end %>
+
+
+        </div>
+
+
+      </div>
+    </div><!-- OUTER CARD WITH GREEN BORDER  ENDED-->
+  </div><!-- ANSWERS CONTAINER ENDED -->
+  <br>
+  <br>

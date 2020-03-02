@@ -1,0 +1,15 @@
+<%= form_for(@student, as: :student_sign_up, html: { :style => "background-clip: border-box; border: 1px solid rgba(0,0,0,.125); border-radius: .25rem; background-color: #fff; background-color: rgba(255,255,255,0.5); padding-top: 20px;", :class => "border border-primary form-signin mb-sm-1 mb-md-3 mb-lg-4 mb-xl-5"}, url: students_sign_up_path(@student)) do |f| %>
+
+<p style="font-size: 20px;">Sign Up - Student</p>
+<br>
+	<%= f.text_field :lab_id, :required => true, :style => "margin-bottom: 20px;", :class => "form-control", :placeholder => "Lab Id"%>
+	<div class="form-group">
+		<%= f.select :branch, options_for_select([["CSE", "cse"], ["Mechanical", "me"], ["Electrical", "etc"]]), {}, { :class => 'form-control' } %>
+	</div>
+	<div class="form-group">
+		<%= f.select :year, options_for_select([["1st Year", "1"], ["2nd Year", "2"], ["3rd Year", "3"], ["4th Year", "4"]]), {}, { :class => 'form-control' } %>
+	</div>
+		<%= f.submit "Sign Up", :class => "btn btn-lg btn-primary btn-block" %>
+	    <p>Already have an account? <%= link_to "Login Here", students_sign_in_path %></p>
+<% end %>
+

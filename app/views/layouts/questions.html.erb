@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Query Desk | Dashboard</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
+  </head>
+
+<body>
+
+<style>
+        html,
+        body {
+          overflow-x: hidden;
+          /* Prevent scroll on narrow devices */
+        }
+      
+        body {
+          padding-top: 56px;
+        }
+      
+        @media (max-width: 991.98px) {
+          .offcanvas-collapse {
+            position: fixed;
+            top: 56px;
+            /* Height of navbar */
+            bottom: 0;
+            left: 100%;
+            width: 100%;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            overflow-y: auto;
+            visibility: hidden;
+            background-color: #343a40;
+            transition: visibility .3s ease-in-out, -webkit-transform .3s ease-in-out;
+            transition: transform .3s ease-in-out, visibility .3s ease-in-out;
+            transition: transform .3s ease-in-out, visibility .3s ease-in-out, -webkit-transform .3s ease-in-out;
+          }
+      
+          .offcanvas-collapse.open {
+            visibility: visible;
+            -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+          }
+        }
+      
+        .nav-scroller {
+          position: relative;
+          z-index: 2;
+          height: 2.75rem;
+          overflow-y: hidden;
+        }
+      
+        .nav-scroller .nav {
+          display: -ms-flexbox;
+          display: flex;
+          -ms-flex-wrap: nowrap;
+          flex-wrap: nowrap;
+          padding-bottom: 1rem;
+          margin-top: -1px;
+          overflow-x: auto;
+          color: rgba(255, 255, 255, .75);
+          text-align: center;
+          white-space: nowrap;
+          -webkit-overflow-scrolling: touch;
+        }
+      
+        .nav-underline .nav-link {
+          padding-top: .75rem;
+          padding-bottom: .75rem;
+          font-size: .875rem;
+          color: #6c757d;
+        }
+      
+        .nav-underline .nav-link:hover {
+          color: #007bff;
+        }
+      
+        .nav-underline .active {
+          font-weight: 500;
+          color: #343a40;
+        }
+      
+        .text-white-50 {
+          color: rgba(255, 255, 255, .5);
+        }
+      
+        .bg-purple {
+          background-color: #6f42c1;
+        }
+      
+        .lh-100 {
+          line-height: 1;
+        }
+      
+        .lh-125 {
+          line-height: 1.25;
+        }
+      
+        .lh-150 {
+          line-height: 1.5;
+        }
+      
+        .blog-header {
+          line-height: 1;
+          border-bottom: 1px solid #e5e5e5;
+        }
+      
+       
+      
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+        }
+      
+        .navbar-nav > li{
+        padding-left: 5px;
+        }
+</style>
+
+
+<% if session[:student_user_id] or session[:teacher_user_id] %>
+   <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light blog-header py-3">
+      <a class="navbar-brand mr-auto mr-lg-0" href="/home/dashboard"
+        style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Query
+        Desk</a>
+      <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="navbar-collapse offcanvas-collapse bg-light " id="navbarsExampleDefault">
+        <ul class="navbar-nav  mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"> <span class="sr-only">(current)</span></a>
+          </li>
+
+          <% if session[:teacher_user_id] %>
+            <li class="nav-item">
+              <%= link_to "Notifications (#{TeacherRecord.find_by(lab_id: session[:teacher_user_id]).teacher_notifications.where(read: false).count})", notifications_path ,:class => "nav-link" %>
+            </li>
+          <% end %>
+
+          <li class="nav-item">
+            <%= form_tag question_search_path, method: :get, :class =>"form-inline my-2 my-lg-0" do %>
+              <%= text_field_tag :search, nil, :placeholder => "Search Question By Title", :class => "form-control mr-sm-2" %>
+              <%= submit_tag "Search Question", name: nil, :class => "btn btn-outline-primary my-2 my-sm-0" %>
+            <% end %>
+          </li>
+        </ul>
+
+        <% if session[:student_user_id] %>
+           <button class="btn btn-outline-success my-2 my-sm-0"type="button"  data-toggle="modal" data-target="#exampleModalCenter">Add Question</button>
+        <% end %>
+
+        <% if session[:student_user_id] %>
+          <h class="navbar-text btn">Welcome, <%= session[:student_name] %></h>
+          <%= link_to "Sign Out", students_sign_out_path, method: :delete %>
+        <% elsif session[:teacher_user_id] %>
+          <h class="navbar-text btn">Welcome, <%= session[:teacher_name] %></h>
+          <%= link_to "Sign Out", teachers_sign_out_path, method: :delete %>
+        <% end %>
+
+      </div>
+    </nav>
+
+    <% if session[:student_user_id] %>
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-dark" id="exampleModalLongTitle">Add questions</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+                <%= form_for(@question = Question.new, as: :new_question, url: questions_path(@question)) do |f| %>
+                <div class="form-group">
+                <%= f.label :title, "Question Title", html: { :for => "exampleFormControlTextarea1" } %>
+                <%= f.text_field :title, :class => "form-control", html: { :id => "exampleInputEmail1"} %>
+                </div>
+                <div class="form-group">
+                <%= f.label :body, "Question Title", html: { :for => "exampleFormControlTextarea1" } %>
+                <%= f.text_area :body, :class => "form-control", html: { :id => "exampleFormControlTextarea1", :rows => "3" } %>
+                </div>                   
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <%= f.submit "Add Question", :class => "btn btn-primary" %>
+                </div>
+                </div>
+                <% end %>
+
+      <% end %>
+
+      </div>
+  </div>
+<br>
+<% end %>
+
+<% if notice %>
+  <div class="alert alert-success" role="alert">
+    <%= notice %>
+  </div>
+<% elsif alert %>
+  <div class="alert alert-danger" role="alert">
+    <%= alert %>
+  </div>
+<% end %>
+
+<%= yield %>
+
+</body>
+</html>

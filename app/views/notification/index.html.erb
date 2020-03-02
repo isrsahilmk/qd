@@ -1,0 +1,36 @@
+  <br><br>
+<div class="container">
+
+    
+
+    
+
+<div class="card mb-3 ">
+
+<div class="card-body bg-light">
+<h5 class="card-title text-dark">Notification</h5>
+
+<% if @notifications.order(created_at: :desc).any? %>
+<% @notifications.order(created_at: :desc).limit(20).each do |notification| %>
+<div class="alert alert-info">
+    <div class="container">
+        <b>Notification:</b> <%= notification.body %> - <strong class="text-dark"><%= time_ago_in_words(notification.created_at) %> ago</strong>
+    </div>
+</div>
+<% end %>
+ <% @notifications.update_all(read: true) %>
+<% else %>
+  No new notifications
+<% end %>
+
+
+</div>
+</div>
+</div>
+
+
+   
+   
+   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+        <script src="offcanvas.js"></script>

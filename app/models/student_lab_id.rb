@@ -1,0 +1,2 @@
+class StudentLabId < ApplicationRecord
+end
